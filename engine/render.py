@@ -1,3 +1,5 @@
+"""This module manages an intermediary surface that gets rendered to and then scaled up and copied to the window"""
+
 from typing import *
 
 from pygame import transform
@@ -14,7 +16,7 @@ RENDER_TARGET_ASPECT = RENDER_TARGET_SIZE.x / RENDER_TARGET_SIZE.y
 # The size of the window when it's first created
 INITIAL_WINDOW_SIZE = RENDER_TARGET_SIZE * 3 # 960 x 720 is reasonable
 
-# Intermediate surface for drawing to, gets copied to the window every frame
+# Intermediary surface for drawing to, gets copied to the window every frame
 __render_target__: Surface = None
 
 

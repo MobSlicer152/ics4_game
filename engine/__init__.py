@@ -1,3 +1,5 @@
+"""This module has core functions and definitions for the engine package"""
+
 import pygame
 
 from pygame import Color
