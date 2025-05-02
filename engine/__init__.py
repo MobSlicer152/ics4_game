@@ -42,6 +42,9 @@ def run(game_name: str):
         window.fill(Color(0, 0, 0))
 
         render.begin()
+
+        
+
         render.present(window)
 
         pygame.display.flip()
