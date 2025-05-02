@@ -32,10 +32,10 @@ class SpriteSheet:
         self,
         image: Union[AnyStr, Surface],
         sprite_count: int = 0,
-        sprite_size: Vector2 = (16, 16),
+        sprite_size: Vector2 = Vector2(16, 16),
         distance: int = 0,
         vertical: bool = False,
-        offset_pos: Vector2 = (0, 0),
+        offset_pos: Vector2 = Vector2(0, 0),
     ):
         # Either use a surface from an already loaded image, or load a file
         if type(image) == str:
@@ -73,6 +73,7 @@ class SpriteSheet:
                 )
         else:
             self.sprite_count = sprite_count
+        self.sprite_count = int(self.sprite_count)
 
     def __getitem__(self, key: int) -> Sprite:
         sprite = pygame.Surface(self.sprite_size, pygame.SRCALPHA)

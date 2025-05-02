@@ -48,7 +48,7 @@ def run(game_name: str):
     pygame.display.set_caption(game_name)
     window = pygame.display.set_mode(render.INITIAL_WINDOW_SIZE, pygame.RESIZABLE)
 
-    test_sheet = SpriteSheet("animtest.png", sprite_size=(128, 128))
+    test_sheet = SpriteSheet("animtest.png")
     test_anim = Animation(test_sheet, 0.05)
     
     global __clock__
@@ -62,8 +62,8 @@ def run(game_name: str):
         render.begin()
 
         test_anim.update(get_delta())
-        for y in range(0, int(render.RENDER_TARGET_SIZE.y), 128):
-            for x in range(0, int(render.RENDER_TARGET_SIZE.y), 128):
+        for y in range(0, int(render.RENDER_TARGET_SIZE.y), int(test_anim.frame_size.y)):
+            for x in range(0, int(render.RENDER_TARGET_SIZE.x), int(test_anim.frame_size.x)):
                 test_anim.draw((x, y))
 
         render.present(window)
