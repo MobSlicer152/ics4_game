@@ -2,14 +2,28 @@ from typing import AnyStr, Union
 
 import pygame
 
-from pygame import Surface, Vector2
+from pygame import Rect, Surface, Vector2
+
+from engine import render
+from engine.render import Renderable
 
 
-class Sprite(Surface):
+class Sprite(Renderable):
     """A reference to a sprite in a sprite sheet"""
-    
+
     def __init__(self, sheet: "SpriteSheet", index: int):
-        self = sheet[index]
+        self.sheet = sheet
+        self.index = index
+        
+    def get(self) -> Surface:
+        return self.sheet[self.index]
+
+    def draw(self, where: Vector2):
+        render.draw(self.get(), where)
+    
+    def get_size(self) -> Vector2:
+        return self.sheet.sprite_size
+
 
 class SpriteSheet:
     """Allows for dividing up images into multiple sprites"""
@@ -18,7 +32,7 @@ class SpriteSheet:
         self,
         image: Union[AnyStr, Surface],
         sprite_count: int = 0,
-        sprite_size: Vector2 = (128, 128),
+        sprite_size: Vector2 = (16, 16),
         distance: int = 0,
         vertical: bool = False,
         offset_pos: Vector2 = (0, 0),
@@ -60,7 +74,7 @@ class SpriteSheet:
         else:
             self.sprite_count = sprite_count
 
-    def __getitem__(self, key: int):
+    def __getitem__(self, key: int) -> Sprite:
         sprite = pygame.Surface(self.sprite_size, pygame.SRCALPHA)
 
         if self.vertical:
