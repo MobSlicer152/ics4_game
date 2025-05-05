@@ -8,9 +8,9 @@ from pygame.time import Clock
 from engine.anim import Animation
 from engine.sprite import SpriteSheet
 
-from . import render
+from . import input, render, settings
 
-__all__ = ["anim", "collision", "entity", "input", "level", "render", "sprite", "ui"]
+__all__ = ["anim", "collision", "entity", "input", "level", "render", "settings", "sprite", "ui"]
 
 # engine clock
 __clock__ = Clock()
@@ -24,6 +24,8 @@ def init():
     pygame.init()
 
     render.init()
+    input.init()
+    settings.init()
 
 
 def process_events() -> bool:

@@ -8,6 +8,7 @@ from pygame import Color, Rect, Surface, Vector2
 
 from .level import TILE_SIZE
 
+
 # The size of the render target
 RENDER_TARGET_SIZE = Vector2(TILE_SIZE * 20, TILE_SIZE * 15)  # 320 x 240
 
@@ -18,7 +19,7 @@ RENDER_TARGET_ASPECT = RENDER_TARGET_SIZE.x / RENDER_TARGET_SIZE.y
 INITIAL_WINDOW_SIZE = RENDER_TARGET_SIZE * 3  # 960 x 720 is reasonable
 
 # Intermediary surface for drawing to, gets copied to the window every frame
-__render_target__: Surface = None
+_render_target: Surface = None
 
 
 def init():
@@ -30,14 +31,14 @@ def init():
         f"Creating {RENDER_TARGET_SIZE.x:.0f}x{RENDER_TARGET_SIZE.y:.0f} render target"
     )
 
-    global __render_target__
-    __render_target__ = Surface(RENDER_TARGET_SIZE)
+    global _render_target
+    _render_target = Surface(RENDER_TARGET_SIZE)
 
 
 def get_render_target() -> Surface:
     """Gets the render target"""
-    global __render_target__
-    return __render_target__
+    global _render_target
+    return _render_target
 
 
 def begin():

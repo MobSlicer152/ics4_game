@@ -1,3 +1,5 @@
+"""This module implements sprites and sprite sheets"""
+
 from typing import AnyStr, Union
 
 import pygame
