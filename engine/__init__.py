@@ -2,7 +2,7 @@
 
 import pygame
 
-from pygame import Color
+from pygame import Color, Vector2
 from pygame.time import Clock
 
 from engine.anim import Animation
@@ -13,7 +13,7 @@ from . import input, render, settings
 __all__ = ["anim", "collision", "entity", "input", "level", "render", "settings", "sprite", "ui"]
 
 # engine clock
-__clock__ = Clock()
+_clock = Clock()
 
 def init():
     """Initializes the engine"""
@@ -24,7 +24,6 @@ def init():
     pygame.init()
 
     render.init()
-    input.init()
     settings.init()
 
 
@@ -33,14 +32,14 @@ def process_events() -> bool:
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
-            
+
     return True
 
 
 def get_delta() -> float:
     """Gets the time since the last frame in seconds"""
-    global __clock__
-    return __clock__.get_time() / 1000.0
+    global _clock
+    return _clock.get_time() / 1000.0
 
 
 def run(game_name: str):
@@ -52,8 +51,8 @@ def run(game_name: str):
 
     test_sheet = SpriteSheet("animtest.png")
     test_anim = Animation(test_sheet, 0.05)
-    
-    global __clock__
+
+    global _clock
 
     running = True
     while running:
@@ -63,13 +62,19 @@ def run(game_name: str):
 
         render.begin()
 
+        input.update()
+
+        offset = input.get_left_axis()
+        offset.x *= test_anim.frame_size.x
+        offset.y *= test_anim.frame_size.y
+
         test_anim.update(get_delta())
-        for y in range(0, int(render.RENDER_TARGET_SIZE.y), int(test_anim.frame_size.y)):
-            for x in range(0, int(render.RENDER_TARGET_SIZE.x), int(test_anim.frame_size.x)):
+        for y in range(int(-offset.y), int(render.RENDER_TARGET_SIZE.y - offset.y), int(test_anim.frame_size.y)):
+            for x in range(int(offset.x), int(render.RENDER_TARGET_SIZE.x + offset.x), int(test_anim.frame_size.x)):
                 test_anim.draw((x, y))
 
         render.present(window)
 
-        __clock__.tick(60)
+        _clock.tick(60)
 
         pygame.display.flip()
