@@ -52,8 +52,8 @@ def update():
         if keyboard[pygame.K_d] or keyboard[pygame.K_RIGHT]:
             _left_axis.x += 1
 
-        #(w, h) = display.get_window_size()
-        #mouse.set_pos((w / 2, h / 2))
+        (w, h) = display.get_window_size()
+        mouse.set_pos((w / 2, h / 2))
         mouse.set_visible(False)
 
         mouse_pos = Vector2()

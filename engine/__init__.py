@@ -2,7 +2,7 @@
 
 import pygame
 
-from pygame import Color, Vector2, draw
+from pygame import Color, Vector2, draw, mouse
 from pygame.time import Clock
 
 from engine.anim import Animation
@@ -71,12 +71,9 @@ def run(game_name: str):
 
         camera.move(offset)
 
-        test_anim.update(get_delta())
-        for y in range(int(offset.y), int(render.RENDER_TARGET_SIZE.y + offset.y), int(test_anim.frame_size.y)):
-            for x in range(int(offset.x), int(render.RENDER_TARGET_SIZE.x + offset.x), int(test_anim.frame_size.x)):
-                test_anim.draw((x, y))
-
-        draw.line(render.get_render_target(), Color(255, 0, 0), camera.world2screen(Vector2(0)), camera.world2screen(input.get_cursor()))
+        cursor_pos = camera.world2screen(input.get_cursor())
+        draw.line(render.get_render_target(), Color(255, 0, 0), camera.world2screen(Vector2(0)), cursor_pos)
+        draw.circle(render.get_render_target(), Color(255, 0, 0), cursor_pos, 5)
 
         render.present(window)
 
