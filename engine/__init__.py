@@ -2,13 +2,14 @@
 
 import pygame
 
-from pygame import Color, Vector2
+from pygame import Color, Vector2, draw
 from pygame.time import Clock
 
 from engine.anim import Animation
 from engine.sprite import SpriteSheet
 
 from . import input, render, settings
+from engine import camera
 
 __all__ = ["anim", "collision", "entity", "input", "level", "render", "settings", "sprite", "ui"]
 
@@ -42,11 +43,6 @@ def get_delta() -> float:
     return _clock.get_time() / 1000.0
 
 
-def get_screen_size() -> Vector2:
-    """You probably want render.RENDER_TARGET_SIZE unless it's for the mouse"""
-    pass
-
-
 def run(game_name: str):
     """Main loop for the whole program"""
 
@@ -73,10 +69,14 @@ def run(game_name: str):
         offset.x *= test_anim.frame_size.x
         offset.y *= -test_anim.frame_size.y
 
+        camera.move(offset)
+
         test_anim.update(get_delta())
         for y in range(int(offset.y), int(render.RENDER_TARGET_SIZE.y + offset.y), int(test_anim.frame_size.y)):
             for x in range(int(offset.x), int(render.RENDER_TARGET_SIZE.x + offset.x), int(test_anim.frame_size.x)):
                 test_anim.draw((x, y))
+
+        draw.line(render.get_render_target(), Color(255, 0, 0), camera.world2screen(Vector2(0)), camera.world2screen(input.get_cursor()))
 
         render.present(window)
 

@@ -8,9 +8,9 @@ from typing import Any, Type
 
 _SETTINGS_FILE = "settings.json"
 
-_defaults: dict[tuple[Type, Any]] = {}
+_defaults: dict[str, tuple[Type, Any]] = {}
 
-_settings: dict = None
+_settings: dict[str, Any] = {}
 
 def add(name: str, default, type: Type | None):
     """Registers a setting"""

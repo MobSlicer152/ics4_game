@@ -3,7 +3,7 @@
 import pygame
 
 from pygame import Vector2
-from pygame import key, mouse
+from pygame import display, key, mouse
 
 from .camera import screen2world
 
@@ -11,9 +11,9 @@ _is_controller = False
 
 # wasd, arrow keys, or left joystick
 # TODO: allow rebinding keys?
-_left_axis: Vector2
+_left_axis = Vector2(0)
 # mouse or right joystick
-_cursor: Vector2
+_cursor = Vector2(0)
 
 # buttons are <xbox>/<playstation>
 # bit 0 is x/square, bit 1 is y/triangle, bit 2 is b/circle, bit 3 is a/cross
@@ -33,7 +33,6 @@ def update():
     global _buttons
 
     _left_axis = Vector2(0, 0)
-    _cursor = Vector2(0, 0)
 
     _buttons = 0
 
@@ -53,11 +52,13 @@ def update():
         if keyboard[pygame.K_d] or keyboard[pygame.K_RIGHT]:
             _left_axis.x += 1
 
-        mouse_pos = Vector2()
-        (mouse_pos.x, mouse_pos.y) = mouse.get_pos()
-        _cursor = screen2world(mouse_pos)
-        print(f"\r{_cursor}")
+        #(w, h) = display.get_window_size()
+        #mouse.set_pos((w / 2, h / 2))
+        mouse.set_visible(False)
 
+        mouse_pos = Vector2()
+        (mouse_pos.x, mouse_pos.y) = mouse.get_rel()
+        _cursor += mouse_pos
 
 
 def get_left_axis() -> Vector2:

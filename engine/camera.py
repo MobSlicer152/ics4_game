@@ -9,6 +9,12 @@ from .render import Renderable, RENDER_TARGET_SIZE
 _camera_pos = Vector2(0, 0)
 
 
+def move(change: Vector2):
+    """move the camera"""
+    global _camera_pos
+    _camera_pos += change
+
+
 def set_pos(pos: Vector2):
     """set the camera's position"""
     global _camera_pos
@@ -21,7 +27,7 @@ def get_pos(pos: Vector2):
     return _camera_pos
 
 
-def world2screen(pos: Vector2, obj: Renderable | None) -> Vector2:
+def world2screen(pos: Vector2, obj: Renderable | None = None) -> Vector2:
     """projects a world space position into screen space"""
 
     global _camera_pos
@@ -32,7 +38,7 @@ def world2screen(pos: Vector2, obj: Renderable | None) -> Vector2:
         center = Vector2(size.x / 2, size.y / 2)
 
     # make the camera the origin
-    camera = Vector2(pos.x - _camera_pos.x - center.x, pos.y - _camera_pos.y + center.y)
+    camera = Vector2((pos.x - _camera_pos.x) - center.x, (pos.y - _camera_pos.y) + center.y)
 
     # convert origin from center to top left
     # https://math.stackexchange.com/questions/1896656/how-do-i-convert-coordinates-from-bottom-left-as-0-0-to-middle-as-0-0
@@ -49,7 +55,7 @@ def screen2world(pos: Vector2) -> Vector2:
     #
     (width, height) = get_window_size()
     # change origin to center from top left
-    centered = Vector2(pos.x - width / 2, -(pos.y - height / 2))
+    centered = Vector2(pos.x - width / 2, pos.y - height / 2)
     # scale to render target space
     screen = Vector2(centered.x / width * RENDER_TARGET_SIZE.x, centered.y / height * RENDER_TARGET_SIZE.y)
     return screen
