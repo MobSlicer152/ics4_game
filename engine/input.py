@@ -5,13 +5,15 @@ import pygame
 from pygame import Vector2
 from pygame import key, mouse
 
+from .camera import screen2world
+
 _is_controller = False
 
 # wasd, arrow keys, or left joystick
 # TODO: allow rebinding keys?
 _left_axis: Vector2
 # mouse or right joystick
-_right_axis: Vector2
+_cursor: Vector2
 
 # buttons are <xbox>/<playstation>
 # bit 0 is x/square, bit 1 is y/triangle, bit 2 is b/circle, bit 3 is a/cross
@@ -27,11 +29,11 @@ def update():
 
     global _is_controller
     global _left_axis
-    global _right_axis
+    global _cursor
     global _buttons
 
     _left_axis = Vector2(0, 0)
-    _right_axis = Vector2(0, 0)
+    _cursor = Vector2(0, 0)
 
     _buttons = 0
 
@@ -51,7 +53,11 @@ def update():
         if keyboard[pygame.K_d] or keyboard[pygame.K_RIGHT]:
             _left_axis.x += 1
 
-        # TODO: get the mouse position relative to the center of the screen, needs camera
+        mouse_pos = Vector2()
+        (mouse_pos.x, mouse_pos.y) = mouse.get_pos()
+        _cursor = screen2world(mouse_pos)
+        print(f"\r{_cursor}")
+
 
 
 def get_left_axis() -> Vector2:
@@ -59,26 +65,26 @@ def get_left_axis() -> Vector2:
     return _left_axis
 
 
-def get_right_axis() -> Vector2:
-    global _right_axis
-    return _right_axis
+def get_cursor() -> Vector2:
+    global _cursor
+    return _cursor
 
 
 def get_x() -> bool:
     global _buttons
-    return _buttons & _BUTTON_X_MASK
+    return bool(_buttons & _BUTTON_X_MASK)
 
 
 def get_y() -> bool:
     global _buttons
-    return _buttons & _BUTTON_Y_MASK
+    return bool(_buttons & _BUTTON_Y_MASK)
 
 
 def get_b() -> bool:
     global _buttons
-    return _buttons & _BUTTON_B_MASK
+    return bool(_buttons & _BUTTON_B_MASK)
 
 
 def get_a() -> bool:
     global _buttons
-    return _buttons & _BUTTON_A_MASK
+    return bool(_buttons & _BUTTON_A_MASK)

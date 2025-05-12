@@ -1,8 +1,7 @@
 """This module implements the camera system, which turns absolute positions/sizes into screen positions/sizes"""
 
-import pygame
-
 from pygame import Vector2
+from pygame.display import get_window_size
 
 from .render import Renderable, RENDER_TARGET_SIZE
 
@@ -44,6 +43,13 @@ def world2screen(pos: Vector2, obj: Renderable | None) -> Vector2:
 
 def screen2world(pos: Vector2) -> Vector2:
     """un-projects a screen position into world space"""
-    
+
     global _camera_pos
-    return Vector2((pos.x * 2 - RENDER_TARGET_SIZE.x / 2))
+    # https://github.com/MobSlicer152/ld55/blob/main/game/systems/input.c#L14
+    #
+    (width, height) = get_window_size()
+    # change origin to center from top left
+    centered = Vector2(pos.x - width / 2, -(pos.y - height / 2))
+    # scale to render target space
+    screen = Vector2(centered.x / width * RENDER_TARGET_SIZE.x, centered.y / height * RENDER_TARGET_SIZE.y)
+    return screen
