@@ -71,7 +71,7 @@ def run(game_name: str):
 
         camera.move(offset)
 
-        cursor_pos = camera.world2screen(input.get_cursor())
+        cursor_pos = input.get_cursor()
         draw.line(render.get_render_target(), Color(255, 0, 0), camera.world2screen(Vector2(0)), cursor_pos)
         draw.circle(render.get_render_target(), Color(255, 0, 0), cursor_pos, 5)
 

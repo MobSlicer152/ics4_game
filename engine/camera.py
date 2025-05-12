@@ -21,7 +21,7 @@ def set_pos(pos: Vector2):
     _camera_pos = pos
 
 
-def get_pos(pos: Vector2):
+def get_pos():
     """get the camera's position"""
     global _camera_pos
     return _camera_pos

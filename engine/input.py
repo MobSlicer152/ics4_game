@@ -5,7 +5,7 @@ import pygame
 from pygame import Vector2
 from pygame import display, key, mouse
 
-from .camera import screen2world
+from . import camera
 
 _is_controller = False
 
