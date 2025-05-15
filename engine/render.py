@@ -41,9 +41,9 @@ def get_render_target() -> Surface:
     return _render_target
 
 
-def begin():
+def begin(clear: Color = Color(0)):
     """Clears the render target"""
-    get_render_target().fill(Color(50, 50, 50))
+    get_render_target().fill(clear)
 
 
 def draw(surface: Surface, where: Vector2):

@@ -50,7 +50,7 @@ def run(game_name: str):
 
         window.fill(Color(0, 0, 0))
 
-        render.begin()
+        render.begin(Color(50, 50, 50))
 
         input.update()
         
