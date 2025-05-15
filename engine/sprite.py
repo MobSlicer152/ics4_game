@@ -16,13 +16,13 @@ class Sprite(Renderable):
     def __init__(self, sheet: "SpriteSheet", index: int):
         self.sheet = sheet
         self.index = index
-        
+
     def get(self) -> Surface:
         return self.sheet[self.index]
 
     def draw(self, where: Vector2):
-        render.draw(self.get(), where)
-    
+        render.draw(self.get(), where - self.get_size() / 2)
+
     def get_size(self) -> Vector2:
         return self.sheet.sprite_size
 

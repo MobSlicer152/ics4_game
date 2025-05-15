@@ -3,6 +3,7 @@
 from pygame import Vector2
 from pygame.display import get_window_size
 
+from .level import TILE_SIZE
 from .render import Renderable, RENDER_TARGET_SIZE
 
 # current camera position
@@ -38,7 +39,7 @@ def world2screen(pos: Vector2, obj: Renderable | None = None) -> Vector2:
         center = Vector2(size.x / 2, size.y / 2)
 
     # make the camera the origin
-    camera = Vector2((pos.x - _camera_pos.x) - center.x, (pos.y - _camera_pos.y) + center.y)
+    camera = Vector2((pos.x - _camera_pos.x) * TILE_SIZE - center.x, (pos.y - _camera_pos.y) * TILE_SIZE + center.y)
 
     # convert origin from center to top left
     # https://math.stackexchange.com/questions/1896656/how-do-i-convert-coordinates-from-bottom-left-as-0-0-to-middle-as-0-0
@@ -57,5 +58,5 @@ def screen2world(pos: Vector2) -> Vector2:
     # change origin to center from top left
     centered = Vector2(pos.x - width / 2, pos.y - height / 2)
     # scale to render target space
-    screen = Vector2(centered.x / width * RENDER_TARGET_SIZE.x, centered.y / height * RENDER_TARGET_SIZE.y)
+    screen = Vector2(centered.x / width * RENDER_TARGET_SIZE.x / TILE_SIZE, centered.y / height * RENDER_TARGET_SIZE.y / TILE_SIZE)
     return screen

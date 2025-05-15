@@ -3,18 +3,14 @@
 import pygame
 
 from pygame import Color, Vector2, draw, mouse
-from pygame.time import Clock
 
-from engine.anim import Animation
-from engine.sprite import SpriteSheet
+from .anim import Animation
+from .entity import Entity
+from .sprite import SpriteSheet
 
-from . import input, render, settings
-from engine import camera
+from . import camera, input, render, settings, time
 
-__all__ = ["anim", "collision", "entity", "input", "level", "render", "settings", "sprite", "ui"]
-
-# engine clock
-_clock = Clock()
+__all__ = ["anim", "collision", "entity", "input", "level", "render", "settings", "sprite", "time", "ui"]
 
 def init():
     """Initializes the engine"""
@@ -37,12 +33,6 @@ def process_events() -> bool:
     return True
 
 
-def get_delta() -> float:
-    """Gets the time since the last frame in seconds"""
-    global _clock
-    return _clock.get_time() / 1000.0
-
-
 def run(game_name: str):
     """Main loop for the whole program"""
 
@@ -52,8 +42,7 @@ def run(game_name: str):
 
     test_sheet = SpriteSheet("animtest.png")
     test_anim = Animation(test_sheet, 0.05)
-
-    global _clock
+    player = Entity(sprite=test_anim)
 
     running = True
     while running:
@@ -64,19 +53,18 @@ def run(game_name: str):
         render.begin()
 
         input.update()
-
-        offset = input.get_left_axis()
-        offset.x *= test_anim.frame_size.x
-        offset.y *= -test_anim.frame_size.y
-
-        camera.move(offset)
+        
+        player.velocity = input.get_left_axis() * 10
+        
+        player.update()
+        player.draw()
 
         cursor_pos = input.get_cursor()
-        draw.line(render.get_render_target(), Color(255, 0, 0), camera.world2screen(Vector2(0)), cursor_pos)
+        draw.line(render.get_render_target(), Color(255, 0, 0), camera.world2screen(player.position, player), cursor_pos)
         draw.circle(render.get_render_target(), Color(255, 0, 0), cursor_pos, 5)
 
         render.present(window)
 
-        _clock.tick(60)
+        time.tick(60)
 
         pygame.display.flip()

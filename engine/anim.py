@@ -4,9 +4,9 @@ import pygame
 
 from pygame import Surface, Vector2
 
-from engine import render
-from engine.render import Renderable
-from engine.sprite import Sprite, SpriteSheet
+from .time import get_delta
+from .render import Renderable
+from .sprite import Sprite, SpriteSheet
 
 
 class Animation(Renderable):

@@ -44,13 +44,16 @@ def update():
 
         # add and subtract so one key doesn't override the other
         if keyboard[pygame.K_w] or keyboard[pygame.K_UP]:
-            _left_axis.y += 1
-        if keyboard[pygame.K_s] or keyboard[pygame.K_DOWN]:
             _left_axis.y -= 1
+        if keyboard[pygame.K_s] or keyboard[pygame.K_DOWN]:
+            _left_axis.y += 1
         if keyboard[pygame.K_a] or keyboard[pygame.K_LEFT]:
             _left_axis.x -= 1
         if keyboard[pygame.K_d] or keyboard[pygame.K_RIGHT]:
             _left_axis.x += 1
+
+        if _left_axis.length() > 0:
+            _left_axis = _left_axis.normalize()
 
         (w, h) = display.get_window_size()
         mouse.set_pos((w / 2, h / 2))
