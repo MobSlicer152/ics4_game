@@ -5,8 +5,9 @@ import pygame
 from pygame import Vector2
 from pygame import display, event, key, mouse
 
-from . import camera
+from . import camera, settings
 
+# whether the current input is a controller (TODO: implement controller support when stuff is done)
 _is_controller = False
 
 # wasd, arrow keys, or left joystick
@@ -14,7 +15,6 @@ _is_controller = False
 _left_axis = Vector2(0)
 # mouse or right joystick
 _cursor = Vector2(0)
-_last_mouse_pos = Vector2(0)
 
 # buttons are <xbox>/<playstation>
 # bit 0 is x/square, bit 1 is y/triangle, bit 2 is b/circle, bit 3 is a/cross
@@ -25,13 +25,17 @@ _BUTTON_Y_MASK = 0b0010
 _BUTTON_B_MASK = 0b0100
 _BUTTON_A_MASK = 0b1000
 
+def init():
+    """Registers settings for the input system"""
+    settings.add("sensitivity", 0.2, float)
+
+
 def update():
     """Updates the current input state"""
 
     global _is_controller
     global _left_axis
     global _cursor
-    global _last_mouse_pos
     global _buttons
 
     _left_axis = Vector2(0, 0)
@@ -63,7 +67,7 @@ def update():
         event.set_grab(True)
 
         mouse_rel = Vector2(mouse.get_rel())
-        _cursor += mouse_rel
+        _cursor += mouse_rel * settings.get("sensitivity")
 
 
 def get_left_axis() -> Vector2:

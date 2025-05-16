@@ -13,6 +13,9 @@ def main(argc, argv):
     #level.load("test.png")
 
     engine.run(GAME_NAME)
+    
+    #game.shutdown()
+    engine.shutdown()
 
 if __name__ == "__main__":
     main(len(sys.argv), sys.argv)

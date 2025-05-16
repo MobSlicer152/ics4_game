@@ -10,7 +10,7 @@ from .sprite import SpriteSheet
 
 from . import camera, input, render, settings, time
 
-__all__ = ["anim", "collision", "entity", "input", "level", "render", "settings", "sprite", "time", "ui"]
+__all__ = ["anim", "entity", "input", "level", "render", "settings", "sprite", "time", "ui"]
 
 def init():
     """Initializes the engine"""
@@ -20,8 +20,19 @@ def init():
     print("Initializing pygame")
     pygame.init()
 
+    input.init()
     render.init()
     settings.init()
+
+
+def shutdown():
+    """Shuts down the engine"""
+    
+    print("Shutting down engine")
+    
+    settings.save()
+    
+    pygame.quit()
 
 
 def process_events() -> bool:
