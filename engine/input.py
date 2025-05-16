@@ -3,7 +3,7 @@
 import pygame
 
 from pygame import Vector2
-from pygame import display, key, mouse
+from pygame import display, event, key, mouse
 
 from . import camera
 
@@ -14,6 +14,7 @@ _is_controller = False
 _left_axis = Vector2(0)
 # mouse or right joystick
 _cursor = Vector2(0)
+_last_mouse_pos = Vector2(0)
 
 # buttons are <xbox>/<playstation>
 # bit 0 is x/square, bit 1 is y/triangle, bit 2 is b/circle, bit 3 is a/cross
@@ -30,6 +31,7 @@ def update():
     global _is_controller
     global _left_axis
     global _cursor
+    global _last_mouse_pos
     global _buttons
 
     _left_axis = Vector2(0, 0)
@@ -58,10 +60,10 @@ def update():
         (w, h) = display.get_window_size()
         mouse.set_pos((w / 2, h / 2))
         mouse.set_visible(False)
+        event.set_grab(True)
 
-        mouse_pos = Vector2()
-        (mouse_pos.x, mouse_pos.y) = mouse.get_rel()
-        _cursor += mouse_pos
+        mouse_rel = Vector2(mouse.get_rel())
+        _cursor += mouse_rel
 
 
 def get_left_axis() -> Vector2:

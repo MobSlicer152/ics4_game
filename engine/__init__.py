@@ -65,6 +65,6 @@ def run(game_name: str):
 
         render.present(window)
 
-        time.tick(60)
+        time.tick(0)
 
         pygame.display.flip()
